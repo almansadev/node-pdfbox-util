@@ -41,6 +41,19 @@ export class NodePdfBoxUtilsBasic {
     return obj;
   }
 
+  public static async splitDocument(filePath: string, outputPath: string, options: { [key: string]: any } = {}): Promise<any> {
+    let bufferSize = NodePdfBoxUtilsBasic.getOptionValue(options, "buffer", defaultBuffer);
+    let javaPath  = NodePdfBoxUtilsBasic.getOptionValue(options, "javaPath", defaultJavaPath);
+    const encodedOptions = stingtobase64(JSON.stringify(options));
+    //si outputFile no está definido, lo definimos como "<|empty|>"
+    const command = `${javaPath} -classpath ${java_classpath2} com.node.laucher.PdfSplit`;
+    const params = `${stingtobase64(filePath)} ${stingtobase64(outputPath)} ${encodedOptions}`
+    const result = exec.execSync(`${command} ${params}`, { maxBuffer: 1024 * 1024 * bufferSize });
+    const obj = NodePdfBoxUtilsBasic.extractJSONFromResult(result.toString());
+    //devolvemos el objeto
+    return obj;
+  }
+
 
   public static async convertPdfToImage(filePath: string, fromPage: number, toPage: number, outputPath: string, options: { [key: string]: any } = {}): Promise<any> {
     let bufferSize = NodePdfBoxUtilsBasic.getOptionValue(options, "buffer", defaultBuffer);

@@ -16,6 +16,7 @@ The **node-pdfbox-util** library is developed to facilitate certain actions on P
 - **getDocumentText**: Extract text from a PDF.
 - **convertPdfToImage**: Convert a PDF page to an image.
 - **getDocumentInfo**: Obtain basic document information.
+- **splitDocument**: Split a PDF into different parts.
 
 ## Usage Examples
 
@@ -67,6 +68,25 @@ NodePdfBoxUtilsBasic.convertPdfToImage(pdfFilePath, fromPage, toPage, outputFile
   console.log(result);
 });
 ```
+
+
+### splitDocument
+```javascript
+import { NodePdfBoxUtilsBasic } from 'node-pdfbox-util';
+
+const pdfFilePath = "path/to/pdf.pdf";
+const outputPath = "path/to/pdfparts"; // mandatory. a pdf is generated for each part with naming convention "_part_x.pdf"
+const options = { 
+  startPage: 1, // page to start from 
+  numberOfPages: 20,  // number of pages to convert
+  recursive: true,  // whether to convert recursively or only the initial range
+}
+
+NodePdfBoxUtilsBasic.splitDocument(pdfFilePath, outputPath, options).then((result) => {
+  console.log(result);
+});
+```
+
 
 ## LICENSE
 Copyright (C) 2024 Alberto Almansa
